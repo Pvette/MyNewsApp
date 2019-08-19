@@ -33,20 +33,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-        if (networkInfo != null && networkInfo.isConnected()) {
-            LoaderManager loaderManager = getSupportLoaderManager();
-            loaderManager.initLoader(ARTICLE_LOADER_ID, null, this);
-        }
-        else {
-            View loadingIndicator = findViewById(R.id.loading_indicator);
-            loadingIndicator.setVisibility(View.GONE);
-            mEmptyStateTextView = findViewById(R.id.empty_view);
-            mEmptyStateTextView.setText(R.string.no_internet_connection);
-        }
-
-
 
         ListView articleListView = (ListView) findViewById(R.id.list);
         mEmptyStateTextView = (TextView) findViewById(R.id.empty_view);
@@ -64,9 +50,19 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 Intent websiteIntent = new Intent(Intent.ACTION_VIEW, articleUri);
                 startActivity(websiteIntent);
 
+
+                ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+                NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+                if (networkInfo != null && networkInfo.isConnected()) {
+                    LoaderManager loaderManager = getSupportLoaderManager();
+                    loaderManager.initLoader(ARTICLE_LOADER_ID, null, this);
+                } else {
+                    View loadingIndicator = findViewById(R.id.loading_indicator);
+                    loadingIndicator.setVisibility(View.GONE);
+                    mEmptyStateTextView = findViewById(R.id.empty_view);
+                    mEmptyStateTextView.setText(R.string.no_internet_connection);
+                }
             }
-
-
             @Override
             public ArticleLoader onCreateLoader(int id, Bundle bundle) {
                 Uri baseUri = Uri.parse(GUARDIAN_REQUEST_URL);
@@ -102,5 +98,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
                 mAdapter.clear();
             }
-        };
+        });
 
+    }
+}
