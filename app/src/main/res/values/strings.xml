@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">MyNewsApp</string>
+
+    <!-- Error message when there is no internet connectivity [CHAR LIMIT=NONE] -->
+
+    <string name="no_internet_connection">No internet connection.</string>
+
+    <string name="no_articles">No articles.</string>
+
+</resources>
